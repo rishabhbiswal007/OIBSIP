@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .task-list-container {
+            background-color: #6afda0;
+            border: 1px solid #f0d507;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #100404;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ToDo App</h1>
+        <input type="text" id="taskInput" placeholder="Add new task...">
+        <div class="task-list-container">
+            <h2>Pending Tasks</h2>
+            <ul id="pendingTasks"></ul>
+        </div>
+        <div class="task-list-container">
+            <h2>Completed Tasks</h2>
+            <ul id="completedTasks"></ul>
+        </div>
+    </div>
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const pendingTasksList = document.getElementById('pendingTasks');
+        const completedTasksList = document.getElementById('completedTasks');
+
+        taskInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText === '') return;
+
+            const taskItem = document.createElement('li');
+            const deleteBtn = document.createElement('button');
+
+            taskItem.innerHTML = `
+                <span>${taskText}</span>
+            `;
+            deleteBtn.innerText = 'Delete';
+            deleteBtn.className = 'delete-btn';
+            taskItem.appendChild(deleteBtn);
+
+            deleteBtn.addEventListener('click', function() {
+                taskItem.remove();
+            });
+
+            taskItem.addEventListener('click', function() {
+                if (!taskItem.classList.contains('completed')) {
+                    taskItem.classList.add('completed');
+                    completedTasksList.appendChild(taskItem);
+                } else {
+                    taskItem.classList.remove('completed');
+                    pendingTasksList.appendChild(taskItem);
+                }
+            });
+
+            pendingTasksList.appendChild(taskItem);
+            taskInput.value = '';
+        }
+    </script>
+</body>
+</html>
